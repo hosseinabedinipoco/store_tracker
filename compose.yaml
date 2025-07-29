@@ -7,14 +7,13 @@ services:
       - "5000:5000"
     depends_on:
       - db
-    environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_NAME: net_project
     networks:
       - app-network
+    environment:
+      - JWT_SECRET=secret1234
+    volumes:
+      - ./backend:/app
+      # - /app/node_modules   
 
   frontend:
     build: ./frontend
@@ -22,6 +21,10 @@ services:
       - "3000:3000"
     networks:
       - app-network
+
+    volumes:
+      - ./frontend:/app
+      # - /app/node_modules  
 
   db:
     image: postgres:15

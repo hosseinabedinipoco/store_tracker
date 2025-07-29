@@ -1,16 +1,19 @@
 const express = require('express');
+const models = require('./models');
+// require('dotenv').config();
+
+const authRoutes = require('./routes/auth');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
 app.use(express.json());
 
-// Routes
-app.get('/', (req, res) => {
-  res.send('سلام! بک‌اند Node.js کار می‌کنه.');
-});
+app.use('/api', authRoutes);
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+models.sequelize.sync({ alter: true }).then(() => {
+  console.log('✅ Database synced');
+  app.listen(PORT, () => {
+    console.log(`🚀 Server is running on http://localhost:${PORT}`);
+  });
 });
