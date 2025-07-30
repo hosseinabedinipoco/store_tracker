@@ -13,6 +13,9 @@ app.use('/products', productRoutes);
 
 app.use('/account', authRoutes);
 
+const orderRoutes = require('./routes/orderRoutes');
+app.use('/orders', orderRoutes);
+
 models.sequelize.sync({ alter: true }).then(() => {
   console.log('✅ Database synced');
   app.listen(PORT, () => {

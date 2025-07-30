@@ -1,20 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
   const Order = sequelize.define('Order', {
-    total_price: DataTypes.FLOAT,
-    status: DataTypes.STRING,
-    address: DataTypes.STRING,
-    phone_number: DataTypes.STRING,
-    date: DataTypes.DATE,
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    items: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: [],
+    },
+    total: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
+    status: {
+      type: DataTypes.ENUM('pending', 'processing', 'shipped', 'cancelled'),
+      defaultValue: 'pending',
+    },
   });
-
-  Order.associate = models => {
-    Order.belongsTo(models.User, { foreignKey: 'userId' });
-
-    Order.belongsToMany(models.Product, {
-      through: models.OrderProduct,
-      foreignKey: 'orderId',
-    });
-  };
 
   return Order;
 };
