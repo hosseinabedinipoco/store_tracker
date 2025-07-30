@@ -1,5 +1,7 @@
 const express = require('express');
 const models = require('./models');
+const cors = require('cors'); // ✅ CORS imported
+
 // require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
@@ -8,6 +10,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
+app.use(cors()); // ✅ CORS enabled globally
+
 const productRoutes = require('./routes/productRoutes');
 app.use('/products', productRoutes);
 
