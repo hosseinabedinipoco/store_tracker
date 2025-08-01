@@ -13,13 +13,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
@@ -138,10 +131,7 @@ export default function WalletPage() {
 
 			<main className="container mx-auto px-4 py-8">
 				<div className="mb-8">
-					<h1 className="text-3xl font-bold mb-2">My Wallet</h1>
-					<p className="text-muted-foreground">
-						Manage your wallet balance and payment methods
-					</p>
+					<h1 className="text-3xl font-bold mb-2">My Wallet</h1>					
 				</div>
 
 				{/* Wallet Overview */}

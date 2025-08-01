@@ -98,12 +98,7 @@ export function AuthForm({ mode }: AuthFormProps) {
 						{mode === "login"
 							? "Welcome Back"
 							: "Create an Account"}
-					</CardTitle>
-					<CardDescription>
-						{mode === "login"
-							? "Sign in to your ShopHub account to continue shopping"
-							: "Join ShopHub to start your shopping journey"}
-					</CardDescription>
+					</CardTitle>					
 				</CardHeader>
 
 				<CardContent>
