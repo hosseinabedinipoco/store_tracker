@@ -59,10 +59,6 @@ export default function HomePage() {
 	}, []);
 
 	useEffect(() => {
-		localStorage.setItem("cart", JSON.stringify(cart));
-	}, [cart]);
-
-	useEffect(() => {
 		const fetchProducts = async () => {
 			try {
 				setLoading(true);
@@ -112,7 +108,7 @@ export default function HomePage() {
 	const addToCart = (product: Product) => {
 		setCart((prev) => {
 			const existing = prev.find((item) => item.id === product.id);
-			let newCart;
+			let newCart: CartItem[];
 
 			if (existing) {
 				newCart = prev.map((item) =>
@@ -121,9 +117,18 @@ export default function HomePage() {
 						: item
 				);
 			} else {
-				newCart = [...prev, { ...product, quantity: 1 }];
+				newCart = [
+					...prev,
+					{
+						...product,
+						quantity: 1,
+						stock: product.stock || 0,
+						category: product.category || "Uncategorized",
+					},
+				];
 			}
 
+			localStorage.setItem("cart", JSON.stringify(newCart));
 			return newCart;
 		});
 	};
@@ -238,13 +243,6 @@ export default function HomePage() {
 									fill
 									className="object-cover transition-transform group-hover:scale-105"
 								/>
-								<Button
-									size="icon"
-									variant="secondary"
-									className="absolute right-2 bottom-2 opacity-0 transition-opacity group-hover:opacity-100"
-								>
-									<Heart className="h-4 w-4" />
-								</Button>
 							</div>
 
 							<CardContent className="p-4">
