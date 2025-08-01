@@ -27,7 +27,7 @@ exports.login = async (req, res) => {
     expiresIn: '1d',
   });
 
-  res.json({ token });
+  res.json({ token, is_admin: user.is_admin });
 };
 
 exports.profile = async (req, res) => {

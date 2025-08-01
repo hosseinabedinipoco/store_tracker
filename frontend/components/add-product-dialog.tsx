@@ -1,0 +1,218 @@
+"use client";
+
+import type React from "react";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog";
+
+interface AddProductDialogProps {
+	open: boolean;
+	onOpenChange: (open: boolean) => void;
+	onAddProduct: (product: any) => void;
+}
+
+export function AddProductDialog({
+	open,
+	onOpenChange,
+	onAddProduct,
+}: AddProductDialogProps) {
+	const [formData, setFormData] = useState({
+		name: "",
+		description: "",
+		price: "",
+		category: "",
+		stock: "",
+		image: "",
+		inStock: true,
+	});
+
+	const categories = [
+		"Electronics",
+		"Clothing",
+		"Accessories",
+		"Sports",
+		"Home",
+	];
+
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+
+		const product = {
+			...formData,
+			price: Number.parseFloat(formData.price),
+			stock: Number.parseInt(formData.stock),
+			image: formData.image || "/placeholder.svg?height=300&width=300",
+		};
+
+		onAddProduct(product);
+
+		setFormData({
+			name: "",
+			description: "",
+			price: "",
+			category: "",
+			stock: "",
+			image: "",
+			inStock: true,
+		});
+	};
+
+	return (
+		<Dialog open={open} onOpenChange={onOpenChange}>
+			<DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+				<DialogHeader>
+					<DialogTitle>Add New Product</DialogTitle>
+					<DialogDescription>
+						Create a new product for your store
+					</DialogDescription>
+				</DialogHeader>
+
+				<form onSubmit={handleSubmit} className="space-y-4">
+					<div className="grid grid-cols-2 gap-4">
+						<div className="space-y-2">
+							<Label htmlFor="name">Product Name *</Label>
+							<Input
+								id="name"
+								value={formData.name}
+								onChange={(e) =>
+									setFormData({
+										...formData,
+										name: e.target.value,
+									})
+								}
+								required
+							/>
+						</div>
+					</div>
+
+					<div className="space-y-2">
+						<Label htmlFor="description">Description *</Label>
+						<Textarea
+							id="description"
+							value={formData.description}
+							onChange={(e) =>
+								setFormData({
+									...formData,
+									description: e.target.value,
+								})
+							}
+							required
+						/>
+					</div>
+
+					<div className="grid grid-cols-2 gap-4">
+						<div className="space-y-2">
+							<Label htmlFor="category">Category *</Label>
+							<Select
+								value={formData.category}
+								onValueChange={(value) =>
+									setFormData({
+										...formData,
+										category: value,
+									})
+								}
+							>
+								<SelectTrigger>
+									<SelectValue placeholder="Select category" />
+								</SelectTrigger>
+								<SelectContent>
+									{categories.map((category) => (
+										<SelectItem
+											key={category}
+											value={category}
+										>
+											{category}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+						</div>
+
+						<div className="space-y-2">
+							<Label htmlFor="stock">Stock Count *</Label>
+							<Input
+								id="stock"
+								type="number"
+								min="0"
+								value={formData.stock}
+								onChange={(e) =>
+									setFormData({
+										...formData,
+										stock: e.target.value,
+									})
+								}
+								required
+							/>
+						</div>
+					</div>
+
+					<div className="grid grid-cols-2 gap-4">
+						<div className="space-y-2">
+							<Label htmlFor="price">Price *</Label>
+							<Input
+								id="price"
+								type="number"
+								step="0.01"
+								min="0"
+								value={formData.price}
+								onChange={(e) =>
+									setFormData({
+										...formData,
+										price: e.target.value,
+									})
+								}
+								required
+							/>
+						</div>
+					</div>
+
+					<div className="space-y-2">
+						<Label htmlFor="image">Image URL (optional)</Label>
+						<Input
+							id="image"
+							type="url"
+							value={formData.image}
+							onChange={(e) =>
+								setFormData({
+									...formData,
+									image: e.target.value,
+								})
+							}
+							placeholder="https://example.com/image.jpg"
+						/>
+					</div>
+
+					<DialogFooter>
+						<Button
+							type="button"
+							variant="outline"
+							onClick={() => onOpenChange(false)}
+						>
+							Cancel
+						</Button>
+						<Button type="submit">Add Product</Button>
+					</DialogFooter>
+				</form>
+			</DialogContent>
+		</Dialog>
+	);
+}

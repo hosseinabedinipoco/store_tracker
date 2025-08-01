@@ -68,7 +68,9 @@ export function AuthForm({ mode }: AuthFormProps) {
 			if (mode === "login") {
 				localStorage.setItem("token", data.token);
 				toast.success("Login successful!");
-				router.push("/home");
+				data.is_admin === true
+					? router.push("/admin")
+					: router.push("/home");
 			} else {
 				toast.success(
 					"Registration successful! Redirecting to login..."
