@@ -2,16 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import {
-	Search,
+import {	
 	ShoppingCart,
-	User,
-	Wallet,
-	Package,
-	Menu,
+	User,	
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
 	DropdownMenu,
@@ -20,7 +15,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 interface NavbarProps {
 	cartCount?: number;
@@ -49,7 +43,7 @@ export function Navbar({ cartCount = 0 }: NavbarProps) {
 						<Link href="/cart">
 							<ShoppingCart className="h-5 w-5" />
 							{cartCount > 0 && (
-								<Badge className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 text-xs">
+								<Badge className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 text-xs flex justify-center items-center">
 									{cartCount}
 								</Badge>
 							)}
@@ -66,6 +60,9 @@ export function Navbar({ cartCount = 0 }: NavbarProps) {
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end" className="w-56">
+							<DropdownMenuItem asChild>
+								<Link href="/home">Home</Link>
+							</DropdownMenuItem>
 							<DropdownMenuItem asChild>
 								<Link href="/orders">My Orders</Link>
 							</DropdownMenuItem>

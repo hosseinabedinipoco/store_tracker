@@ -56,7 +56,10 @@ export function AdminNavbar() {
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end" className="w-56">
 							<DropdownMenuItem asChild>
-								<Link href="/">View Store</Link>
+								<Link href="/admin">Home</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem asChild>
+								<Link href="/admin/orders">Orders</Link>
 							</DropdownMenuItem>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem asChild>
