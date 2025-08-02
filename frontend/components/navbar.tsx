@@ -1,11 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import {	
-	ShoppingCart,
-	User,	
-} from "lucide-react";
+import { ShoppingCart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -20,8 +16,7 @@ interface NavbarProps {
 	cartCount?: number;
 }
 
-export function Navbar({ cartCount = 0 }: NavbarProps) {	
-
+export function Navbar({ cartCount = 0 }: NavbarProps) {
 	return (
 		<header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
 			<div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -74,7 +69,10 @@ export function Navbar({ cartCount = 0 }: NavbarProps) {
 								<Link
 									href="/login"
 									className="text-red-600 hover:!text-red-500"
-									onClick={() => localStorage.removeItem("token")}
+									onClick={() => {
+										localStorage.removeItem("token");
+										localStorage.removeItem("cart");
+									}}
 								>
 									Sign Out
 								</Link>

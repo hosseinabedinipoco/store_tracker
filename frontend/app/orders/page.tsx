@@ -44,6 +44,20 @@ interface Order {
 	estimatedDelivery: string | null;
 }
 
+interface Product {
+	id: number;
+	name: string;
+	price: number;
+	image?: string;
+	category: string;
+	stock: number;
+	description: string;
+}
+
+interface CartItem extends Product {
+	quantity: number;
+}
+
 export default function OrdersPage() {
 	const [orders, setOrders] = useState<Order[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -51,6 +65,14 @@ export default function OrdersPage() {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [statusFilter, setStatusFilter] = useState("all");
 	const [sortBy, setSortBy] = useState("newest");
+	const [cart, setCart] = useState<CartItem[]>([]);
+
+	useEffect(() => {
+		const savedCart = localStorage.getItem("cart");
+		if (savedCart) {
+			setCart(JSON.parse(savedCart));
+		}
+	}, []);
 
 	useEffect(() => {
 		const fetchOrders = async () => {
@@ -223,7 +245,9 @@ export default function OrdersPage() {
 
 	return (
 		<div className="min-h-screen bg-background">
-			<Navbar />
+			<Navbar
+				cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
+			/>
 
 			<main className="container mx-auto px-4 py-8">
 				<div className="mb-8">

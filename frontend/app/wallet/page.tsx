@@ -24,11 +24,33 @@ import {
 import { Navbar } from "@/components/navbar";
 import { toast } from "@/components/ui/use-toast";
 
+interface Product {
+	id: number;
+	name: string;
+	price: number;
+	image?: string;
+	category: string;
+	stock: number;
+	description: string;
+}
+
+interface CartItem extends Product {
+	quantity: number;
+}
+
 export default function WalletPage() {
 	const [walletBalance, setWalletBalance] = useState(0);
 	const [topUpAmount, setTopUpAmount] = useState("");
 	const [isTopUpOpen, setIsTopUpOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
+	const [cart, setCart] = useState<CartItem[]>([]);
+
+	useEffect(() => {
+		const savedCart = localStorage.getItem("cart");
+		if (savedCart) {
+			setCart(JSON.parse(savedCart));
+		}
+	}, []);
 
 	useEffect(() => {
 		const fetchWalletBalance = async () => {
@@ -78,14 +100,17 @@ export default function WalletPage() {
 
 		try {
 			setIsLoading(true);
-			const response = await fetch("http://localhost:5000/account/charge-wallet", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-				body: JSON.stringify({ amount }),
-			});
+			const response = await fetch(
+				"http://localhost:5000/account/charge-wallet",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify({ amount }),
+				}
+			);
 
 			if (!response.ok) {
 				throw new Error("Failed to charge wallet");
@@ -115,7 +140,12 @@ export default function WalletPage() {
 	if (isLoading) {
 		return (
 			<div className="min-h-screen bg-background">
-				<Navbar />
+				<Navbar
+					cartCount={cart.reduce(
+						(sum, item) => sum + item.quantity,
+						0
+					)}
+				/>
 				<main className="container mx-auto px-4 py-8">
 					<div className="flex justify-center items-center h-64">
 						<p>Loading wallet information...</p>
@@ -127,11 +157,13 @@ export default function WalletPage() {
 
 	return (
 		<div className="min-h-screen bg-background">
-			<Navbar />
+			<Navbar
+				cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
+			/>
 
 			<main className="container mx-auto px-4 py-8">
 				<div className="mb-8">
-					<h1 className="text-3xl font-bold mb-2">My Wallet</h1>					
+					<h1 className="text-3xl font-bold mb-2">My Wallet</h1>
 				</div>
 
 				{/* Wallet Overview */}

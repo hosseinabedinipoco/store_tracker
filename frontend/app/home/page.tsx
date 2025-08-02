@@ -265,11 +265,9 @@ export default function HomePage() {
 											? "default"
 											: "secondary"
 									}
-									className="mt-2"
+									className="mt-2 ml-2"
 								>
-									{product.stock > 0
-										? "In Stock"
-										: "Out of Stock"}
+									{product.stock}
 								</Badge>
 							</CardContent>
 

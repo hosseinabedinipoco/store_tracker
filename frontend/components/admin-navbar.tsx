@@ -9,10 +9,8 @@ import {
 	BarChart3,
 	Settings,
 	Menu,
-	LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -66,9 +64,10 @@ export function AdminNavbar() {
 								<Link
 									href="/login"
 									className="text-red-600 hover:!text-red-500"
-									onClick={() =>
-										localStorage.removeItem("token")
-									}
+									onClick={() => {
+										localStorage.removeItem("token");
+										localStorage.removeItem("cart");
+									}}
 								>
 									Sign Out
 								</Link>
