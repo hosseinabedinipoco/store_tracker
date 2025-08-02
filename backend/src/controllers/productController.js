@@ -32,8 +32,8 @@ exports.createProduct = async (req, res) => {
 
   if (!user.is_admin) return res.status(403).json({ message: 'Forbidden' });
 
-  const { name, description, price, stock, category } = req.body;
-  const product = await Product.create({ name, description, price, stock, category });
+  const { name, description, price, stock, category, image } = req.body;
+  const product = await Product.create({ name, description, price, stock, category, image });
   res.status(201).json(product);
 };
 
