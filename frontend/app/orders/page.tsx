@@ -93,8 +93,7 @@ export default function OrdersPage() {
 					);
 				}
 
-				const data = await response.json();
-                console.log(data)
+				const data = await response.json();                
 
 				const transformedOrders = await Promise.all(
 					data.map(async (order: any) => {

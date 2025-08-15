@@ -207,8 +207,7 @@ export default function AdminOrdersPage() {
 		if (!editingOrder) return;
 
 		try {
-			const orderId = editingOrder.id.replace("ORD-", "");
-            console.log(orderId);
+			const orderId = editingOrder.id.replace("ORD-", "");            
 			const response = await fetch(
 				`http://localhost:5000/orders/${orderId}`,
 				{

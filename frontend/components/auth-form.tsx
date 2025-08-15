@@ -27,6 +27,7 @@ interface AuthFormProps {
 export function AuthForm({ mode }: AuthFormProps) {
 	const [showPassword, setShowPassword] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 	const router = useRouter();
 
 	const [formData, setFormData] = useState({
@@ -57,12 +58,17 @@ export function AuthForm({ mode }: AuthFormProps) {
 			});
 
 			const data = await response.json();
-			console.log(data);
 
 			if (!response.ok) {
-				throw new Error(
-					data.message || data.error || "Authentication failed"
-				);
+				if (response.status === 401 && mode === "login") {
+					throw new Error("Username or password is incorrect");
+				} else if (response.status === 400 && mode === "register") {
+					throw new Error("Username already exists");
+				} else {
+					throw new Error(
+						data.message || data.error || "Authentication failed"
+					);
+				}
 			}
 
 			if (mode === "login") {
@@ -78,12 +84,7 @@ export function AuthForm({ mode }: AuthFormProps) {
 				setTimeout(() => router.push("/login"), 1500);
 			}
 		} catch (error: any) {
-			toast.error(
-				error.message ||
-					`${
-						mode === "login" ? "Login" : "Registration"
-					} failed. Please try again.`
-			);
+			setError(error.message);
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -98,11 +99,16 @@ export function AuthForm({ mode }: AuthFormProps) {
 						{mode === "login"
 							? "Welcome Back"
 							: "Create an Account"}
-					</CardTitle>					
+					</CardTitle>
 				</CardHeader>
 
 				<CardContent>
 					<form onSubmit={handleSubmit} className="space-y-4">
+						{error && (
+							<p className="text-sm font-medium text-destructive text-center">
+								{error}
+							</p>
+						)}
 						<div className="space-y-2">
 							<Label htmlFor="username">Username</Label>
 							<div className="relative">

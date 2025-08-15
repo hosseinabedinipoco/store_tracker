@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Search, ShoppingCart, Heart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +15,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Navbar } from "@/components/navbar";
+import { useDebounce } from "@/hooks/use-debounce";
 
 interface Product {
 	id: number;
@@ -50,6 +50,12 @@ export default function HomePage() {
 	const [selectedCategory, setSelectedCategory] = useState<string>("All");
 	const [sortBy, setSortBy] = useState<string>("featured");
 	const [cart, setCart] = useState<CartItem[]>([]);
+	const [searchInput, setSearchInput] = useState("");
+	const debouncedSearchQuery = useDebounce(searchInput, 500);
+
+	useEffect(() => {
+		setSearchQuery(debouncedSearchQuery);
+	}, [debouncedSearchQuery]);
 
 	useEffect(() => {
 		const savedCart = localStorage.getItem("cart");
@@ -182,8 +188,8 @@ export default function HomePage() {
 							<Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 							<Input
 								placeholder="Search products..."
-								value={searchQuery}
-								onChange={(e) => setSearchQuery(e.target.value)}
+								value={searchInput}
+								onChange={(e) => setSearchInput(e.target.value)}
 								className="pl-10"
 							/>
 						</div>

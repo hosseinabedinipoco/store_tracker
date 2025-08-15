@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Search, Plus, Edit, Trash2, Eye, Package } from "lucide-react";
+import { Search, Plus, Edit, Trash2, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,6 +28,7 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useDebounce } from "@/hooks/use-debounce";
 
 const API_BASE_URL = "http://localhost:5000";
 
@@ -38,7 +39,7 @@ interface Product {
 	price: number;
 	originalPrice?: number;
 	image?: string;
-	category: string;	
+	category: string;
 	rating?: number;
 	reviews?: number;
 	stock: number;
@@ -55,6 +56,12 @@ export default function AdminDashboard() {
 	const [sortBy, setSortBy] = useState<string>("newest");
 	const [isAddDialogOpen, setIsAddDialogOpen] = useState<boolean>(false);
 	const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+	const [searchInput, setSearchInput] = useState("");
+	const debouncedSearchQuery = useDebounce(searchInput, 500);
+
+	useEffect(() => {
+		setSearchQuery(debouncedSearchQuery);
+	}, [debouncedSearchQuery]);
 
 	const categories: string[] = [
 		"All",
@@ -127,8 +134,8 @@ export default function AdminDashboard() {
 			const response = await fetch(`${API_BASE_URL}/products/`, {
 				method: "POST",
 				headers: {
-					"Content-Type": "application/json",					
-					"Authorization": `Bearer ${localStorage.getItem('token')}`
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
 				},
 				body: JSON.stringify(newProduct),
 			});
@@ -155,8 +162,10 @@ export default function AdminDashboard() {
 				{
 					method: "PUT",
 					headers: {
-						"Content-Type": "application/json",						
-						"Authorization": `Bearer ${localStorage.getItem('token')}`
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem(
+							"token"
+						)}`,
 					},
 					body: JSON.stringify(updatedProduct),
 				}
@@ -185,8 +194,10 @@ export default function AdminDashboard() {
 				`${API_BASE_URL}/products/${productId}`,
 				{
 					method: "DELETE",
-					headers: {												
-						"Authorization": `Bearer ${localStorage.getItem('token')}`
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem(
+							"token"
+						)}`,
 					},
 				}
 			);
@@ -241,8 +252,8 @@ export default function AdminDashboard() {
 							<Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 							<Input
 								placeholder="Search products..."
-								value={searchQuery}
-								onChange={(e) => setSearchQuery(e.target.value)}
+								value={searchInput}
+								onChange={(e) => setSearchInput(e.target.value)}
 								className="pl-10"
 							/>
 						</div>
@@ -313,7 +324,7 @@ export default function AdminDashboard() {
 										<div className="flex items-center gap-4 text-sm">
 											<span>
 												Category: {product.category}
-											</span>											
+											</span>
 											<span>Stock: {product.stock}</span>
 										</div>
 									</div>
@@ -340,7 +351,7 @@ export default function AdminDashboard() {
 										</Badge>
 									</div>
 
-									<div className="flex items-center gap-2">										
+									<div className="flex items-center gap-2">
 										<Button
 											variant="outline"
 											size="icon"
