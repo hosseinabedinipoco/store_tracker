@@ -191,22 +191,6 @@ export function EditProductDialog({
 						</div>
 					</div>
 
-					<div className="space-y-2">
-						<Label htmlFor="image">Image URL</Label>
-						<Input
-							id="image"
-							type="url"
-							value={formData.image}
-							onChange={(e) =>
-								setFormData({
-									...formData,
-									image: e.target.value,
-								})
-							}
-							placeholder="https://example.com/image.jpg"
-						/>
-					</div>
-
 					<DialogFooter>
 						<Button
 							type="button"

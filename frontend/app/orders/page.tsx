@@ -480,20 +480,7 @@ function OrderCard({
 									).toLocaleDateString()}
 								</span>
 							)}
-						</div>
-						<div className="flex items-center gap-2">							
-							{order.status === "delivered" && (
-								<Button variant="outline" size="sm">
-									Reorder
-								</Button>
-							)}
-							{(order.status === "processing" ||
-								order.status === "pending") && (
-								<Button variant="outline" size="sm">
-									Cancel Order
-								</Button>
-							)}
-						</div>
+						</div>						
 					</div>
 				</div>
 			</CardContent>
